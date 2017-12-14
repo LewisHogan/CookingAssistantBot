@@ -1,3 +1,10 @@
+"""
+main.py
+Entry point for the application
+
+created by lh16674 14/12/17
+"""
+
 import time
 
 from YummlyModule import YummlyModule
@@ -6,15 +13,17 @@ yum = YummlyModule()
 
 from naoqi import ALProxy
 
+# TODO: Change from storing location of pepper bot from hardcoded to config option in file
+
 tts = ALProxy("ALTextToSpeech", "pepper.local", 9559)
 tablet = ALProxy("ALTabletService", "pepper.local", 9559)
 
-tts.setVolume(0.5)
-
-def say(prompt, debug=True):
+# When read to run for real/with voice, change debug to False
+def say(prompt, debug=True, volume=0.5):
     if debug:
         print prompt
     else:
+        tts.setVolume(volume)
         tts.say(prompt)
 
 def find_recipe(search_term, max_results=5):
@@ -25,7 +34,7 @@ def find_recipe(search_term, max_results=5):
     
     recipes = yum.find_recipes(search_term.split(" "), max_results)
 
-    if recipes == None:
+    if recipes == None or len(recipes) < 1:
         say("I couldn't find a recipe!")
         return None
 
@@ -41,14 +50,15 @@ def find_recipe(search_term, max_results=5):
                 tablet.showImage(str(recipe['images'][0]['hostedMediumUrl']))
             elif recipe['images'][0]['hostedSmallUrl']:
                 tablet.showImage(str(recipe['images'][0]['hostedSmallUrl']))
-        # TODO: Ask if the user wants that recipe
 
         say('Would you like to make it?')
 
-        # TEMP VAR, REMOVE WHEN USER VOICE INPUT READY
+        # TODO: TEMP VAR, REMOVE WHEN USER VOICE INPUT READY
 
         response = raw_input()
 
+        # If user says no, give them the next recipe in the list
+        # If we have finished the list, give up
         if response.lower() in  ["no", "nah", "nope", "negative", "no thanks", "n"]:
             if current_recipe_index < len(recipes)-1:
                 say("Let's try another recipe then")
@@ -62,10 +72,6 @@ def find_recipe(search_term, max_results=5):
             found_recipe = True
             say("Looks like we're making {}".format(recipe["name"]))
 
-    # If user says no, give them the next recipe in the list
-    # If we have finished the list, give up
-
-    # If the user says yes however, then we can print the ingredients and show the webpage of the food
 
     return recipe
 
