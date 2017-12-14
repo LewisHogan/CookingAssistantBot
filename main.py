@@ -13,10 +13,13 @@ yum = YummlyModule()
 
 from naoqi import ALProxy
 
+pepper_ip = "pepper.local"
+
 # TODO: Change from storing location of pepper bot from hardcoded to config option in file
 
-tts = ALProxy("ALTextToSpeech", "pepper.local", 9559)
-tablet = ALProxy("ALTabletService", "pepper.local", 9559)
+tts = ALProxy("ALTextToSpeech", pepper_ip, 9559)
+animated_speech = ALProxy("ALAnimatedSpeech", pepper_ip, 9559)
+tablet = ALProxy("ALTabletService", pepper_ip, 9559)
 
 # When read to run for real/with voice, change debug to False
 def say(prompt, debug=True, volume=0.5):
@@ -24,7 +27,7 @@ def say(prompt, debug=True, volume=0.5):
         print prompt
     else:
         tts.setVolume(volume)
-        tts.say(prompt)
+        animated_speech.say(prompt, {"bodyLanguagemode": "contextual"})
 
 def find_recipe(search_term, max_results=5):
     say("Searching for {}".format(search_term))
@@ -89,7 +92,8 @@ def display_recipe(recipe):
     say("I don't quite know how to read the instructions yet, but you can see them on my chest")
 
 while True:
-    say("What would you like to make?")
+    # TODO: Set volume to higher than 0.0 when not annoying people with the noise
+    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?", debug=True, volume=0.0)
     # TODO: Replace with user voice input
     search_term = raw_input()
     if search_term in ["quit", "exit", "stop"]:
@@ -102,4 +106,3 @@ while True:
     else:
         display_recipe(recipe)
         break
-    
