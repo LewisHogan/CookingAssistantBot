@@ -25,47 +25,53 @@ class YummlyModule:
     def set_api_key(self, new_api_key):
         self.api_key = new_api_key
 
-    """
-    Searches Yummly API using given parameters, see (https://developer.yummly.com/documentation) for params list
-
-    Args:
-        search_params: str[]
-
-    Returns:
-        A request object which contains a json of the found results
-    """
+    
     def search_yummly(self, search_params):
+        """
+        Searches Yummly API using given parameters,
+        see (https://developer.yummly.com/documentation) for params list
+
+        Args:
+            search_params: str[]
+
+        Returns:
+            A request object which contains a json of the found results
+        """
+
         url = "http://api.yummly.com/v1/api/recipes?_app_id=" + self.app_id + "&_app_key=" + self.api_key + "&" + "&".join(search_params)
         return requests.get(url)
 
-    """
+    def get_recipe(self, recipe_id):
+        """
         Fetches a specific recipe's information in detail from YUMMLY
         See (https://developer.yummly.com/documentation) for a list of attributes
     
-    Args:
-        recipe_id: str
+        Args:
+            recipe_id: str
 
-    Returns:
-        A json object with the details of the requested recipe
-    """
-    def get_recipe(self, recipe_id):
+        Returns:
+            A json object with the details of the requested recipe
+        """
+        
         try:
             url = "http://api.yummly.com/v1/api/recipe/" + recipe_id + "?_app_id=" + self.app_id + "&_app_key=" + self.api_key
             return requests.get(url).json()
         except ValueError:
             # TODO: Implement response to failing to convert json
             return None
-    """
-    Searches Yummly API for the top n recipes containing a certain ingredient
     
-    Args:
-        ingredients : str[]
-        limit : int
-
-    Returns:
-        A list of all found recipes (up to size n)
-    """
     def find_recipes(self, ingredients, limit=5):
+        """
+        Searches Yummly API for the top n recipes containing a certain ingredient
+    
+        Args:
+            ingredients : str[]
+            limit : int
+
+        Returns:
+            A list of all found recipes (up to size n)
+        """
+
         try:
             params = [
                 "q=" + " ".join(ingredients),

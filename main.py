@@ -93,7 +93,7 @@ def display_recipe(recipe):
 
 while True:
     # TODO: Set volume to higher than 0.0 when not annoying people with the noise
-    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?", debug=True, volume=0.0)
+    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?")
     # TODO: Replace with user voice input
     search_term = raw_input()
     if search_term in ["quit", "exit", "stop"]:
