@@ -14,20 +14,28 @@ yum = YummlyModule()
 from naoqi import ALProxy
 
 pepper_ip = "pepper.local"
+broker_port = 9559
 
 # TODO: Change from storing location of pepper bot from hardcoded to config option in file
 
-tts = ALProxy("ALTextToSpeech", pepper_ip, 9559)
-animated_speech = ALProxy("ALAnimatedSpeech", pepper_ip, 9559)
-tablet = ALProxy("ALTabletService", pepper_ip, 9559)
+tts = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
+animated_speech = ALProxy("ALAnimatedSpeech", pepper_ip, broker_port)
+speech = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
+tablet = ALProxy("ALTabletService", pepper_ip, broker_port)
 
 # When read to run for real/with voice, change debug to False
-def say(prompt, debug=True, volume=0.5):
+def say(prompt, debug=False, volume=0.5, animated=True):
+    prompt = prompt.encode("ascii", "ignore")
     if debug:
         print prompt
     else:
         tts.setVolume(volume)
-        animated_speech.say(prompt, {"bodyLanguagemode": "contextual"})
+
+        if animated:
+            animated_speech.say(prompt, {"bodyLanguagemode": "contextual"})
+        else:
+            speech.say(prompt)
+        
 
 def find_recipe(search_term, max_results=5):
     say("Searching for {}".format(search_term))
@@ -81,27 +89,35 @@ def find_recipe(search_term, max_results=5):
 def display_recipe(recipe):
     # Show webpage on tablet
     # List instructions via voice
+
     say("The ingredients for {} are".format(recipe["name"]))
 
     if tablet.loadUrl(str(recipe["source"]["sourceRecipeUrl"])):
         tablet.showWebview()
 
     for ingredient in set(recipe["ingredientLines"]):
+        say(ingredient, debug=True)
         say(ingredient)
 
-    say("I don't quite know how to read the instructions yet, but you can see them on my chest")
+    say("I'm still learning how to read instructions, in the mean time, try looking at my chest")
 
 while True:
     # TODO: Set volume to higher than 0.0 when not annoying people with the noise
     say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?")
     # TODO: Replace with user voice input
+	
+	# From looking at the documentation available http://doc.aldebaran.com/2-1/naoqi/audio/alspeechrecognition-api.html#alspeechrecognition-api
+	# It looks like we need to subscribe to an event
+	# Then we can unsubscribe and continue here
     search_term = raw_input()
+	# Put a loop here until we get an event, might need a global/nonlocal to say if we've encountered a word yet to break out
     if search_term in ["quit", "exit", "stop"]:
         break
 
     recipe = find_recipe(search_term)
 
     if recipe == None:
+        say("Sorry, I couldn't find a recipe for that")
         continue
     else:
         display_recipe(recipe)
