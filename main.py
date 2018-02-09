@@ -8,9 +8,11 @@ created by lh16674 14/12/17
 import time
 
 from YummlyModule import YummlyModule
+#from WordRecogniserModule import WordRecogniserModule
 
 yum = YummlyModule()
 
+from naoqi import ALBroker
 from naoqi import ALProxy
 
 pepper_ip = "pepper.local"
@@ -24,7 +26,7 @@ speech = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
 tablet = ALProxy("ALTabletService", pepper_ip, broker_port)
 
 # When read to run for real/with voice, change debug to False
-def say(prompt, debug=False, volume=0.5, animated=True):
+def say(prompt, debug=False, volume=1, animated=True):
     prompt = prompt.encode("ascii", "ignore")
     if debug:
         print prompt
@@ -90,10 +92,10 @@ def display_recipe(recipe):
     # Show webpage on tablet
     # List instructions via voice
 
-    say("The ingredients for {} are".format(recipe["name"]))
-
     if tablet.loadUrl(str(recipe["source"]["sourceRecipeUrl"])):
         tablet.showWebview()
+
+    say("The ingredients for {} are".format(recipe["name"]))
 
     for ingredient in set(recipe["ingredientLines"]):
         say(ingredient, debug=True)
