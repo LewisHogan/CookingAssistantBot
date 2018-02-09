@@ -9,8 +9,10 @@ import time
 
 from YummlyModule import YummlyModule
 #from WordRecogniserModule import WordRecogniserModule
+#from TescoModule import TescoModule
 
 yum = YummlyModule()
+#tesco = TescoModule()
 
 from naoqi import ALBroker
 from naoqi import ALProxy
@@ -26,11 +28,12 @@ speech = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
 tablet = ALProxy("ALTabletService", pepper_ip, broker_port)
 
 # When read to run for real/with voice, change debug to False
-def say(prompt, debug=False, volume=1, animated=True):
+def say(prompt, debug=False, volume=1, animated=True, force_speech = False):
     prompt = prompt.encode("ascii", "ignore")
     if debug:
         print prompt
-    else:
+
+    if force_speech or not debug:
         tts.setVolume(volume)
 
         if animated:
@@ -105,7 +108,7 @@ def display_recipe(recipe):
 
 while True:
     # TODO: Set volume to higher than 0.0 when not annoying people with the noise
-    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?")
+    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?", debug=True, force_speech=True)
     # TODO: Replace with user voice input
 	
 	# From looking at the documentation available http://doc.aldebaran.com/2-1/naoqi/audio/alspeechrecognition-api.html#alspeechrecognition-api

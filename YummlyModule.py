@@ -12,8 +12,8 @@ class YummlyModule:
         try:
             with open("keys.json") as config_file:
                 config = json.loads(config_file.read())
-                self.set_app_id(config["app_id"])
-                self.set_api_key(config["api_key"])
+                self.set_app_id(config["yummly_app_id"])
+                self.set_api_key(config["yummly_api_key"])
         # TODO: Proper exception handling
         except Exception as err:
             print("Error setting up Yummly Module")

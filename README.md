@@ -5,7 +5,8 @@ A recipe assistant that runs on Pepper (Aldebaran's robot)
 Written in Python 2.7
 
 ## Setup
-
+Install the requests library for Python2.7
+Clone this repository and run main.py
 
 ### Dependencies
 
@@ -17,8 +18,13 @@ To use the bot you will need access to the following API's
 The app_id and api_key for Yummly should be stored in a keys.json file in the following format
 
 	{
-			"app_id": "YOUR_YUMMLY_APP_ID",
-			"api_key": "YOUR_YUMMLY_API_KEY"
+			"yummly_app_id": "YOUR_YUMMLY_APP_ID",
+			"yummly_api_key": "YOUR_YUMMLY_API_KEY"
 	}
 
-In addition to the above requirements, CookingAssistantBot also requires that the Requests library is installed on Pepper.
+In addition to the above requirements, CookingAssistantBot also requires that the Requests library is installed.
+
+## Coming Soon
+
+- Tesco API Integration for Pricing information
+- Temperature Conversion
