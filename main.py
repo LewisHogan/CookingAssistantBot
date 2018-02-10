@@ -8,7 +8,6 @@ created by lh16674 14/12/17
 import time
 
 from YummlyModule import YummlyModule
-#from WordRecogniserModule import WordRecogniserModule
 #from TescoModule import TescoModule
 
 yum = YummlyModule()
