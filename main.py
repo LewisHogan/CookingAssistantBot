@@ -102,7 +102,9 @@ def display_recipe(recipe):
     for ingredient in set(recipe["ingredientLines"]):
         say(ingredient, debug=True)
         say(ingredient)
-
+	
+	# recipe_price = tesco.estimate_costs(recipe["ingredientLines"])
+	# say("I've been looking online, and I think the recipe should cost {} pounds".format(recipe_price))
     say("I'm still learning how to read instructions, in the mean time, try looking at my chest")
 
 while True:
