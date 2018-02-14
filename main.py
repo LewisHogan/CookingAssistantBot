@@ -8,10 +8,10 @@ created by lh16674 14/12/17
 import time
 
 from YummlyModule import YummlyModule
-#from TescoModule import TescoModule
+from TescoModule import TescoModule
 
 yum = YummlyModule()
-#tesco = TescoModule()
+tesco = TescoModule()
 
 from naoqi import ALBroker
 from naoqi import ALProxy
@@ -27,7 +27,7 @@ speech = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
 tablet = ALProxy("ALTabletService", pepper_ip, broker_port)
 
 # When read to run for real/with voice, change debug to False
-def say(prompt, debug=False, volume=1, animated=True, force_speech = False):
+def say(prompt, debug=False, volume=0.3, animated=True, force_speech = False):
     prompt = prompt.encode("ascii", "ignore")
     if debug:
         print prompt
@@ -102,9 +102,9 @@ def display_recipe(recipe):
     for ingredient in set(recipe["ingredientLines"]):
         say(ingredient, debug=True)
         say(ingredient)
-	
-	# recipe_price = tesco.estimate_costs(recipe["ingredientLines"])
-	# say("I've been looking online, and I think the recipe should cost {} pounds".format(recipe_price))
+
+    recipe_price = tesco.estimate_costs(recipe["ingredientLines"])
+    say("I've been looking online, and I think the recipe should cost {} pounds".format(recipe_price))
     say("I'm still learning how to read instructions, in the mean time, try looking at my chest")
 
 while True:
