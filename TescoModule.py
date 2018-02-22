@@ -22,13 +22,14 @@ class TescoModule():
     def set_api_key(self, tesco_api_key):
         self.tesco_key = tesco_api_key
 
-    def search_for_ingredient(self, search_term, limit=1):
+    def search_for_ingredient(self, search_term, limit=1, offset=0):
         """
         Searches Tesco API using given search term
 
         Args:
             search_term: str
             limit: int
+            offset: int
 
         Returns:
             A list of JSON search results for the given query
@@ -36,7 +37,7 @@ class TescoModule():
         headers = {
             "Ocp-Apim-Subscription-Key": self.tesco_key
         }
-        url = "https://dev.tescolabs.com/grocery/products/?query=" + search_term + "&offset=0&limit=" + str(limit)
+        url = "https://dev.tescolabs.com/grocery/products/?query=" + search_term + "&offset=" + str(offset) + "&limit=" + str(limit)
         return requests.get(url, headers=headers).json()["uk"]["ghs"]["products"]["results"]
 
     def estimate_cost(self, ingredient):

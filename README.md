@@ -19,12 +19,16 @@ The app_id and api_key for Yummly should be stored in a keys.json file in the fo
 
 	{
 			"yummly_app_id": "YOUR_YUMMLY_APP_ID",
-			"yummly_api_key": "YOUR_YUMMLY_API_KEY"
+			"yummly_api_key": "YOUR_YUMMLY_API_KEY",
+			"tesco_api_key": "YOUR_TESCO_API_KEY_HERE"
 	}
 
 In addition to the above requirements, CookingAssistantBot also requires that the Requests library is installed.
 
-## Coming Soon
+## Still Need Testing
 
 - Tesco API Integration for Pricing information
+
+## Coming Soon
+
 - Temperature Conversion
