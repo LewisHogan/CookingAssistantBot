@@ -50,7 +50,6 @@ class TescoModule():
 		A float containing the price of the first search result given by Tesco
         """
         search_results = self.search_for_ingredient(ingredient)
-        print search_results[0]
         return search_results[0]["price"] if len(search_results) > 0 else 0
 
     def estimate_costs(self, ingredients):
