@@ -107,24 +107,43 @@ def display_recipe(recipe):
     say("I've been looking online, and I think the recipe should cost {} pounds".format(recipe_price))
     say("I'm still learning how to read instructions, in the mean time, try looking at my chest")
 
-while True:
-    # TODO: Set volume to higher than 0.0 when not annoying people with the noise
-    say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?", debug=True, force_speech=True)
-    # TODO: Replace with user voice input
+def show_conversions():
+    # Loads the webpage with a selection of conversion options onto the tablet
+    if tablet.loadUrl("http://privatewww.essex.ac.uk/~lh16674/tempConversion.html")):
+        tablet.showWebview()
+
+def make_recipe():
+    while True:
+        # TODO: Set volume to higher than 0.0 when not annoying people with the noise
+        say("^start(animations/Stand/Gestures/Excited_1) What would you like to make?", debug=True, force_speech=True)
+        # TODO: Replace with user voice input
 	
 	# From looking at the documentation available http://doc.aldebaran.com/2-1/naoqi/audio/alspeechrecognition-api.html#alspeechrecognition-api
 	# It looks like we need to subscribe to an event
 	# Then we can unsubscribe and continue here
-    search_term = raw_input()
+        search_term = raw_input(":")
 	# Put a loop here until we get an event, might need a global/nonlocal to say if we've encountered a word yet to break out
-    if search_term in ["quit", "exit", "stop"]:
-        break
+        if search_term in ["quit", "exit", "stop"]:
+            break
 
-    recipe = find_recipe(search_term)
+        recipe = find_recipe(search_term)
 
-    if recipe == None:
-        say("Sorry, I couldn't find a recipe for that")
-        continue
+        if recipe == None:
+            say("Sorry, I couldn't find a recipe for that")
+            continue
+        else:
+            display_recipe(recipe)
+            break
+
+while True:
+    say("What would you like to do?")
+    say("cook, convert or shut me down?")
+    response = raw_input(":")
+
+    if response in ["cook", "bake", "food", "make"]:
+        make_recipe()
+    elif response in ["convert"]:
+        show_conversions()
     else:
-        display_recipe(recipe)
+        say("Shutting down...")
         break
