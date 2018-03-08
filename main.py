@@ -27,7 +27,7 @@ speech = ALProxy("ALTextToSpeech", pepper_ip, broker_port)
 tablet = ALProxy("ALTabletService", pepper_ip, broker_port)
 
 # When read to run for real/with voice, change debug to False
-def say(prompt, debug=False, volume=0.3, animated=True, force_speech = False):
+def say(prompt, debug=False, volume=0.5, animated=True, force_speech = False):
     prompt = prompt.encode("ascii", "ignore")
     if debug:
         print prompt
@@ -109,7 +109,7 @@ def display_recipe(recipe):
 
 def show_conversions():
     # Loads the webpage with a selection of conversion options onto the tablet
-    if tablet.loadUrl("http://privatewww.essex.ac.uk/~lh16674/tempConversion.html")):
+    if tablet.loadUrl("http://privatewww.essex.ac.uk/~lh16674/tempConversion.html"):
         tablet.showWebview()
 
 def make_recipe():
